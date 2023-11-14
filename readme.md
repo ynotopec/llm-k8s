@@ -18,7 +18,7 @@ mistralai/Mistral-7B-Instruct-v0.1
 lmsys/vicuna-13b-v1.5"
 
 # Définir le domaine racine
-export rootDomain=numerique-interieur.com
+export rootDomain=example.com
 
 # Cloner le dépôt de Helm et se déplacer dans le dossier
 git clone https://github.com/gmougeolle/fastchat-helm
