@@ -1,61 +1,54 @@
-Sure, here's a documentation write-up for the provided script:
+# Script d'Installation Automatisé pour LLM sur Kubernetes
 
----
+Ce script permet d'installer et de configurer automatiquement des modèles de langage de grande taille (LLM) dans un environnement Kubernetes.
 
-# LLM K8S Install Documentation
+## Prérequis
 
-This documentation outlines the process for setting up a Kubernetes (K8S) environment to deploy Large Language Models (LLMs) using Helm charts. The setup involves configuring a webserver, API, and a model worker for various LLMs.
+- Un GPU compatible CUDA.
+- NVIDIA OPERATOR installé sur votre cluster Kubernetes.
 
-## Prerequisites
+## Script d'Installation
 
-Before you begin, ensure you have the following prerequisites:
+```bash
+#!/bin/bash
 
-- CUDA GPU: A CUDA-compatible GPU is required for running the models.
-- NVIDIA OPERATOR: This should be installed and configured on your Kubernetes cluster.
+# Définir le chemin de base pour les modèles LLM
+modelPathList="bofenghuang/vigogne-13b-instruct
+mistralai/Mistral-7B-Instruct-v0.1
+lmsys/vicuna-13b-v1.5"
 
-## Installation Steps
+# Définir le domaine racine
+export rootDomain=numerique-interieur.com
 
-1. **Set the Model Path List**: Define the model paths for the LLMs you wish to deploy. For example:
+# Cloner le dépôt de Helm et se déplacer dans le dossier
+git clone https://github.com/gmougeolle/fastchat-helm
+cd fastchat-helm
 
-   ```bash
-   modelPathList="bofenghuang/vigogne-13b-instruct
-   mistralai/Mistral-7B-Instruct-v0.1
-   lmsys/vicuna-13b-v1.5"
-   ```
+# Boucle pour traiter chaque chemin de modèle
+echo "${modelPathList}" | while read modelPath; do
+  export modelPath=${modelPath}
+  export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
+  export modelSize=$(echo ${modelPath} | awk -F '-' '{print $2}' | tr -dc '0-9')
+  export storageRequest=$((modelSize * 3))Gi
+  export gpuLimit=1
 
-2. **Configure the Domain**: Set the root domain for your services:
+  # Générer le fichier values.yaml pour chaque modèle
+  envsubst < ./values.yaml.tpl > ${modelName}-values.yaml
 
-   ```bash
-   export rootDomain=numerique-interieur.com
-   ```
+  # Installer ou mettre à jour le modèle via Helm
+  helm upgrade --install ${modelName} . -f ${modelName}-values.yaml -n ${modelName} --create-namespace
 
-3. **Clone the Helm Chart Repository**:
+  # Supprimer les pods nécessaires pour appliquer la nouvelle configuration
+  kubectl -n ${modelName} get pod -o name | grep -E "(fastchat-helm-web-server|fastchat-api)" | xargs kubectl -n ${modelName} delete
+done
+```
 
-   ```bash
-   git clone https://github.com/gmougeolle/fastchat-helm
-   cd fastchat-helm
-   ```
+## Instructions d'Utilisation
 
-4. **Create the Ingress Configuration**: Use the provided template to create an ingress configuration for the fastchat API.
+1. Exécutez le script sur un système où `kubectl` et `helm` sont installés et configurés pour communiquer avec votre cluster Kubernetes.
+2. Le script va automatiquement cloner le dépôt nécessaire, créer les configurations, et déployer chaque modèle LLM spécifié dans `modelPathList`.
 
-5. **Configure Values**: Edit `values.yaml.tpl` to set various configurations such as webserver, API, controller, and model worker settings.
+## Note
 
-6. **Deploy the Models**: Run the provided script to deploy each model in the `modelPathList`. The script performs the following actions for each model:
-   
-   - Sets environment variables based on the model path.
-   - Generates a `values.yaml` file for the Helm chart.
-   - Uninstalls any existing Helm release for the model.
-   - Deletes the Kubernetes namespace for the model.
-   - Installs the Helm chart for the model in a new namespace.
-
-7. **Restart Necessary Pods**: After deployment, the script restarts certain pods to ensure that the new configurations are applied.
-
-## Notes
-
-- The script assumes familiarity with Helm, Kubernetes, and the use of environment variables in shell scripts.
-- Customizations may be necessary based on the specific requirements of your Kubernetes environment and the models you are deploying.
-- Ensure that your Kubernetes cluster has the necessary resources (GPUs, storage, etc.) to support the deployed models.
-
----
-
-This documentation provides a basic overview of the installation process. Depending on your specific use case and environment, additional configuration or steps may be necessary.
+- Ce script est conçu pour être le plus automatisé possible. Cependant, il peut nécessiter des ajustements en fonction de l'environnement spécifique de votre cluster Kubernetes et des exigences des modèles LLM.
+- Assurez-vous que votre cluster dispose des ressources nécessaires (GPU, stockage, etc.) pour supporter les modèles déployés.
