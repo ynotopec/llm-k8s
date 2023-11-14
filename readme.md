@@ -24,6 +24,30 @@ export rootDomain=numerique-interieur.com
 git clone https://github.com/gmougeolle/fastchat-helm
 cd fastchat-helm
 
+# Ajout Ingress API
+cat <<EOT >./templates/fastchat-api-ingress.yaml
+{{- if .Values.webserver.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "fastchat-helm.fullname" . }}-api
+  labels:
+  {{- include "fastchat-helm.labels" . | nindent 4 }}
+spec:
+  rules:
+  - host: {{ .Values.api.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: '{{ include "fastchat-helm.fullname" . }}-api'
+            port:
+              number: 8001
+        path: /
+        pathType: Prefix
+{{- end }}
+EOT
+
 # Boucle pour traiter chaque chemin de modèle
 echo "${modelPathList}" | while read modelPath; do
   export modelPath=${modelPath}
