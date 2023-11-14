@@ -111,6 +111,13 @@ echo "${modelPathList}" | while read modelPath; do
 
   # Installer ou mettre à jour le modèle via Helm
   helm upgrade --install ${modelName} . -f ${modelName}-values.yaml -n ${modelName} --create-namespace
+done
+
+# Fix de contournement
+sleep 60
+echo "${modelPathList}" | while read modelPath; do
+  export modelPath=${modelPath}
+  export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
 
   # Supprimer les pods nécessaires pour appliquer la nouvelle configuration
   kubectl -n ${modelName} get pod -o name | grep -E "(fastchat-helm-web-server|fastchat-api)" | xargs kubectl -n ${modelName} delete
