@@ -2,7 +2,7 @@
 
 modelPathList="OpenLLM-France/Claire-7B-0.1"
 
-export rootDomain=numerique-interieur.com
+export rootDomain=example.com
 
 cd
 git clone https://github.com/gmougeolle/fastchat-helm
