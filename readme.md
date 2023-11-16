@@ -30,6 +30,8 @@ cat <<EOT >./templates/fastchat-api-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
   name: {{ include "fastchat-helm.fullname" . }}-api
   labels:
   {{- include "fastchat-helm.labels" . | nindent 4 }}
