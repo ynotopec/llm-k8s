@@ -13,9 +13,9 @@ Ce script permet d'installer et de configurer automatiquement des modèles de la
 #!/bin/bash
 
 # Définir le chemin de base pour les modèles LLM
-modelPathList="bofenghuang/vigogne-13b-instruct
-mistralai/Mistral-7B-Instruct-v0.1
-lmsys/vicuna-13b-v1.5"
+modelPathList="lmsys/vicuna-13b-v1.5-16k
+bofenghuang/vigogne-13b-instruct
+mistralai/Mistral-7B-Instruct-v0.1"
 
 # Définir le domaine racine
 export rootDomain=example.com
