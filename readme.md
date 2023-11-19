@@ -31,11 +31,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
   name: {{ include "fastchat-helm.fullname" . }}-api
   labels:
   {{- include "fastchat-helm.labels" . | nindent 4 }}
 spec:
+  tls:
+  - hosts:
+    - {{ .Values.api.ingress.hostname }}
+    secretName: {{ .Values.api.ingress.hostname }}-tls
   rules:
   - host: {{ .Values.api.ingress.hostname }}
     http:
