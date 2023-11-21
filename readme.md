@@ -15,7 +15,8 @@ Ce script permet d'installer et de configurer automatiquement des modèles de la
 # Définir le chemin de base pour les modèles LLM
 modelPathList="lmsys/vicuna-13b-v1.5-16k
 bofenghuang/vigogne-13b-instruct
-mistralai/Mistral-7B-Instruct-v0.1"
+mistralai/Mistral-7B-Instruct-v0.1
+OpenLLM-France/Claire-7B-0.1"
 
 # Définir le domaine racine
 export rootDomain=example.com
