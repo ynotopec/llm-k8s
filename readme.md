@@ -13,7 +13,11 @@ Ce script permet d'installer et de configurer automatiquement des modèles de la
 #!/bin/bash
 
 # Définir le chemin de base pour les modèles LLM
-modelPathList="lmsys/vicuna-13b-v1.5-16k
+modelPathList="lmsys/vicuna-33b-v1.3
+teknium/OpenHermes-2.5-Mistral-7B
+HuggingFaceH4/zephyr-7b-beta
+lmsys/vicuna-13b-v1.5-16k
+lmsys/fastchat-t5-3b-v1.0
 bofenghuang/vigogne-13b-instruct
 mistralai/Mistral-7B-Instruct-v0.1
 OpenLLM-France/Claire-7B-0.1"
