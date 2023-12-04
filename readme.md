@@ -113,8 +113,8 @@ EOT
 # Boucle pour traiter chaque chemin de modèle
 echo "${modelPathList}" | while read modelPath; do
   export modelPath=${modelPath}
-  export modelName=$(basename ${modelPath} |sed -rn 's#^([^-]+)-.*$#\1#p' |tr '[:upper:]' '[:lower:]' )
-  export modelSize=$(basename ${modelPath} |sed -rn 's#^([^-]+)-([0-9]+)[bB].*$#\2#p' )
+  export modelName=$(basename ${modelPath} |sed -rn 's#^([^-]+)(-.*|)$#\1#p' |tr '[:upper:]' '[:lower:]' )
+  export modelSize=$(basename ${modelPath} |sed -rn 's#^(.*)-([0-9]+)[bB].*$#\2#p' )
 #  export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
 #  export modelSize=$(echo ${modelPath} | awk -F '-' '{print $2}' | tr -dc '0-9')
   export storageRequest=$((modelSize * 3))Gi
