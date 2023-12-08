@@ -21,9 +21,9 @@ HuggingFaceH4/zephyr-7b-beta
 lmsys/vicuna-13b-v1.5-16k
 lmsys/fastchat-t5-3b-v1.0
 bofenghuang/vigogne-13b-instruct
-mistralai/Mistral-7B-v0.1
+mistralai/Mistral-7B-Instruct-v0.1
 OpenLLM-France/Claire-7B-0.1"
-#mistralai/Mistral-7B-Instruct-v0.1
+#mistralai/Mistral-7B-v0.1
 
 # Set the root domain
 export rootDomain=example.com
