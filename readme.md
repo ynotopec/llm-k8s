@@ -1,18 +1,20 @@
-# Script d'Installation Automatisé pour LLM sur Kubernetes
+Here's the translation of the script's documentation from French to English:
 
-Ce script permet d'installer et de configurer automatiquement des modèles de langage de grande taille (LLM) dans un environnement Kubernetes.
+'# Automated Installation Script for LLM on Kubernetes
 
-## Prérequis
+This script allows for the automatic installation and configuration of large language models (LLM) in a Kubernetes environment.
 
-- Un GPU compatible CUDA.
-- NVIDIA OPERATOR installé sur votre cluster Kubernetes.
+## Prerequisites
 
-## Script d'Installation
+- A CUDA-compatible GPU.
+- NVIDIA OPERATOR installed on your Kubernetes cluster.
+
+## Installation Script
 
 ```bash
 #!/bin/bash
 
-# Définir le chemin de base pour les modèles LLM
+# Define the base path for LLM models
 modelPathList="lmsys/vicuna-33b-v1.3
 teknium/OpenHermes-2.5-Mistral-7B
 HuggingFaceH4/zephyr-7b-beta
@@ -23,14 +25,14 @@ mistralai/Mistral-7B-v0.1
 OpenLLM-France/Claire-7B-0.1"
 #mistralai/Mistral-7B-Instruct-v0.1
 
-# Définir le domaine racine
+# Set the root domain
 export rootDomain=example.com
 
-# Cloner le dépôt de Helm et se déplacer dans le dossier
+# Clone the Helm repository and move into the folder
 git clone https://github.com/gmougeolle/fastchat-helm
 cd fastchat-helm
 
-# Ajout Ingress API
+# Add Ingress API
 cat <<EOT >./templates/fastchat-api-ingress.yaml
 {{- if .Values.webserver.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
@@ -111,40 +113,38 @@ pvc:
     storageRequest: ${storageRequest}
 EOT
 
-# Boucle pour traiter chaque chemin de modèle
+# Loop to process each model path
 echo "${modelPathList}" | while read modelPath; do
   export modelPath=${modelPath}
   export modelName=$(basename ${modelPath} |sed -rn 's#^([^-]+)(-.*|)$#\1#p' |tr '[:upper:]' '[:lower:]' )
   export modelSize=$(basename ${modelPath} |sed -rn 's#^(.*)-([0-9]+)[bB].*$#\2#p' )
-#  export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
-#  export modelSize=$(echo ${modelPath} | awk -F '-' '{print $2}' | tr -dc '0-9')
   export storageRequest=$((modelSize * 3))Gi
-  export gpuLimit=1
+  export gpuLimit
 
-  # Générer le fichier values.yaml pour chaque modèle
+  # Generate the values.yaml file for each model
   envsubst < ./values.yaml.tpl > ${modelName}-values.yaml
 
-  # Installer ou mettre à jour le modèle via Helm
+  # Install or update the model via Helm
   helm upgrade --install ${modelName} . -f ${modelName}-values.yaml -n ${modelName} --create-namespace
 done
 
-# Fix de contournement
+# Workaround fix
 sleep 60
 echo "${modelPathList}" | while read modelPath; do
   export modelPath=${modelPath}
   export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
 
-  # Supprimer les pods nécessaires pour appliquer la nouvelle configuration
+  # Delete necessary pods to apply the new configuration
   kubectl -n ${modelName} get pod -o name | grep -E "(fastchat-helm-web-server|fastchat-api)" | xargs kubectl -n ${modelName} delete
 done
 ```
 
-## Instructions d'Utilisation
+## Usage Instructions
 
-1. Exécutez le script sur un système où `kubectl` et `helm` sont installés et configurés pour communiquer avec votre cluster Kubernetes.
-2. Le script va automatiquement cloner le dépôt nécessaire, créer les configurations, et déployer chaque modèle LLM spécifié dans `modelPathList`.
+1. Run the script on a system where `kubectl` and `helm` are installed and configured to communicate with your Kubernetes cluster.
+2. The script will automatically clone the necessary repository, create configurations, and deploy each specified LLM model in `modelPathList`.
 
 ## Note
 
-- Ce script est conçu pour être le plus automatisé possible. Cependant, il peut nécessiter des ajustements en fonction de l'environnement spécifique de votre cluster Kubernetes et des exigences des modèles LLM.
-- Assurez-vous que votre cluster dispose des ressources nécessaires (GPU, stockage, etc.) pour supporter les modèles déployés.
+- This script is designed to be as automated as possible. However, it may require adjustments depending on the specific environment of your Kubernetes cluster and the requirements of the LLM models.
+- Ensure that your cluster has the necessary resources (GPU, storage, etc.) to support the deployed models.
