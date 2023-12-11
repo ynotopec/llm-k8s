@@ -1,6 +1,6 @@
 Here's the translation of the script's documentation from French to English:
 
-'# Automated Installation Script for LLM on Kubernetes
+# Automated Installation Script for LLM on Kubernetes
 
 This script allows for the automatic installation and configuration of large language models (LLM) in a Kubernetes environment.
 
