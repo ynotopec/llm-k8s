@@ -119,7 +119,7 @@ echo "${modelPathList}" | while read modelPath; do
   export modelName=$(basename ${modelPath} |sed -rn 's#^([^-]+)(-.*|)$#\1#p' |tr '[:upper:]' '[:lower:]' )
   export modelSize=$(basename ${modelPath} |sed -rn 's#^(.*)-([0-9]+)[bB].*$#\2#p' )
   export storageRequest=$((modelSize * 3))Gi
-  export gpuLimit
+  export gpuLimit=1
 
   # Generate the values.yaml file for each model
   envsubst < ./values.yaml.tpl > ${modelName}-values.yaml
