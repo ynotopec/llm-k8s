@@ -114,8 +114,8 @@ EOT
 # Loop to process each model path
 echo "${modelPathList}" | while read modelPath2; do
   export modelPath=$(echo ${modelPath} |sed -rn 's#^([^[:space:]]+)([[:space:]].*|)$#\1#p' )
-  export modelName=$(basename ${modelPath} |sed -rn 's#^([^-]+)(-.*|)$#\1#p' |tr '[:upper:]' '[:lower:]' )
-  export modelSize=$(basename ${modelPath2} |sed -rn 's#^(.*)-([0-9]+)[bB].*$#\2#p' )
+  export modelName=$(basename ${modelPath} |sed -rn 's#^([[:alnum:]]+)([^[:alnum:]].*|)$#\1#p' |tr '[:upper:]' '[:lower:]' )
+  export modelSize=$(basename ${modelPath2} |sed -rn 's#^.*[^0-9]([0-9]+)[bB].*$#\1#p' )
   export storageRequest=$((modelSize * 3))Gi
   export gpuLimit=1
 
