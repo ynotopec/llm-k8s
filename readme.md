@@ -127,10 +127,10 @@ echo "${modelPathList}" | while read modelPath2; do
 done
 
 # Workaround fix
-sleep 60
+sleep 360
 echo "${modelPathList}" | while read modelPath; do
-  export modelPath=${modelPath}
-  export modelName=$(echo ${modelPath} | awk -F '/' '{print $2}' | awk -F '-' '{print $1}' | tr '[:upper:]' '[:lower:]')
+  export modelPath=$(echo "${modelPath2}" |sed -rn 's#^([^[:space:]]+)([[:space:]].*|)$#\1#p' )
+  export modelName=$(basename "${modelPath}" |sed -rn 's#^(|[0-9]+[bB][^[:alnum:]]+)([[:alnum:]]+)([^[:alnum:]].*|)$#\2#p' |tr '[:upper:]' '[:lower:]' )
 
   # Delete necessary pods to apply the new configuration
   kubectl -n ${modelName} get pod -o name | grep -E "(fastchat-helm-web-server|fastchat-api)" | xargs kubectl -n ${modelName} delete
