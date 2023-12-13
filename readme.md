@@ -128,7 +128,7 @@ done
 
 # Workaround fix
 sleep 360
-echo "${modelPathList}" | while read modelPath; do
+echo "${modelPathList}" | while read modelPath2; do
   export modelPath=$(echo "${modelPath2}" |sed -rn 's#^([^[:space:]]+)([[:space:]].*|)$#\1#p' )
   export modelName=$(basename "${modelPath}" |sed -rn 's#^(|[0-9]+[bB][^[:alnum:]]+)([[:alnum:]]+)([^[:alnum:]].*|)$#\2#p' |tr '[:upper:]' '[:lower:]' )
 
