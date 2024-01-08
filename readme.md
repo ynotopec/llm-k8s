@@ -13,11 +13,12 @@ This script allows for the automatic installation and configuration of large lan
 #!/bin/bash
 
 # Define the base path for LLM models
+# Add size when necessary like "openchat"
 modelPathList="lmsys/vicuna-33b-v1.3
 lmsys/vicuna-7b-v1.5-16k
 lmsys/fastchat-t5-3b-v1.0
 HuggingFaceH4/zephyr-7b-beta
-openchat/openchat_3.5 7B"
+openchat/openchat_3.5 7b"
 
 #bofenghuang/vigogne-13b-instruct
 #mistralai/Mistral-7B-Instruct-v0.1
