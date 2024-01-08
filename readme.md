@@ -14,13 +14,15 @@ This script allows for the automatic installation and configuration of large lan
 
 # Define the base path for LLM models
 modelPathList="lmsys/vicuna-33b-v1.3
-teknium/OpenHermes-2.5-Mistral-7B
-HuggingFaceH4/zephyr-7b-beta
-lmsys/vicuna-13b-v1.5-16k
+lmsys/vicuna-7b-v1.5-16k
 lmsys/fastchat-t5-3b-v1.0
-bofenghuang/vigogne-13b-instruct
-mistralai/Mistral-7B-Instruct-v0.1
-OpenLLM-France/Claire-7B-0.1"
+HuggingFaceH4/zephyr-7b-beta
+openchat/openchat_3.5 7B"
+
+#bofenghuang/vigogne-13b-instruct
+#mistralai/Mistral-7B-Instruct-v0.1
+#OpenLLM-France/Claire-7B-0.1
+#teknium/OpenHermes-2.5-Mistral-7B
 #mistralai/Mistral-7B-v0.1
 
 # Set the root domain
