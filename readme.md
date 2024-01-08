@@ -39,6 +39,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy_buffering: "off"
   name: {{ include "fastchat-helm.fullname" . }}-api
   labels:
   {{- include "fastchat-helm.labels" . | nindent 4 }}
