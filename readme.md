@@ -101,7 +101,7 @@ controller:
 kubernetesClusterDomain: cluster.local
 modelWorker:
   enabled: true
-  extraParams: [ "--model-names","${modelName},gpt-4,gpt-3.5-turbo-16k,text-embedding-ada-002" ]
+  extraParams: [ "--model-names","${modelName},gpt-4,gpt-3.5-turbo,gpt-3.5-turbo-16k,text-embedding-ada-002" ]
   gpuBrand: nvidia.com/gpu
   gpuLimit: ${gpuLimit}
   fastchatModelWorker:
