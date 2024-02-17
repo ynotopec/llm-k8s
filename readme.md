@@ -13,7 +13,7 @@ This script allows for the automatic installation and configuration of large lan
 #!/bin/bash
 
 # Define the base path for LLM models
-# Add size when necessary like "openchat"
+# Add " xb" when necessary. Example : "openchat/openchat_3.5 7b"
 modelPathList="lmsys/vicuna-33b-v1.3
 lmsys/vicuna-7b-v1.5-16k
 lmsys/fastchat-t5-3b-v1.0
