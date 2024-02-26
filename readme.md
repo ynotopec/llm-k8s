@@ -32,7 +32,7 @@ export rootDomain=example.com
 # Clone the Helm repository and move into the folder
 git clone https://github.com/gmougeolle/fastchat-helm
 cd fastchat-helm
-git checkout
+#git checkout
 
 # Add Ingress API
 cat <<EOT >./templates/fastchat-api-ingress.yaml
